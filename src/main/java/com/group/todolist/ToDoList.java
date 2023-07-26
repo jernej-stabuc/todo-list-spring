@@ -1,5 +1,6 @@
 package com.group.todolist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoList {
@@ -33,6 +34,19 @@ public class ToDoList {
             }
         }
         return null;
+    }
+
+    public List<Task> getCompletedTasks() {
+        List<Task> allTasks = databaseManager.getAllTasks();
+        List<Task> completedTasks = new ArrayList<>();
+        if (allTasks != null) {
+            for (Task task: allTasks) {
+                if (task.isCompleted()) {
+                    completedTasks.add(task);
+                }
+            }
+        }
+        return completedTasks;
     }
     // Implement methods to interact with the To-Do List
     // For example: addTask(Task task), getTaskById(long id), getAllTasks(), etc.
