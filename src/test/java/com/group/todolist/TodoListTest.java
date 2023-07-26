@@ -2,7 +2,6 @@ package com.group.todolist;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
@@ -41,7 +40,7 @@ public class TodoListTest {
         verify(mockDatabaseManager, times(1)).addTask(task2);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testAddNullTask() {
         // Pass null task to the ToDoList
         Task task = null;
@@ -167,5 +166,25 @@ public class TodoListTest {
         verify(mockDatabaseManager).getAllTasks();
 
         assertTrue(completedTasks.isEmpty());
+    }
+
+    @Test
+    public void testEditTaskDescription() {
+        Task task = createMockTask(1L, "Test task 1");
+
+        when(mockDatabaseManager.getAllTasks()).thenReturn(List.of(task));
+
+        //Call the method being tested to edit the task description
+        String newDescription = "Updated task description";
+        toDoList.editTaskDescription(1L, newDescription);
+
+        verify(mockDatabaseManager).getAllTasks();
+
+        assertEquals(newDescription, task.getDescription());
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testEditTaskDescriptionNegativeTaskId() {
+        String newDescription = "Updated task description";
+        toDoList.editTaskDescription(-1L, newDescription);
     }
 }

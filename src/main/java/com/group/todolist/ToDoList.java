@@ -48,6 +48,25 @@ public class ToDoList {
         }
         return completedTasks;
     }
+    public void editTaskDescription(long taskId, String newDescription) {
+        List<Task> allTasks = databaseManager.getAllTasks();
+
+        boolean foundTask = false;
+
+        for (Task task: allTasks) {
+            if (task.getId() == taskId) {
+                task.setDescription(newDescription);
+                foundTask = true;
+                break;
+            }
+        }
+        if (!foundTask) {
+            throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
+        }
+
+    }
+
+
     // Implement methods to interact with the To-Do List
     // For example: addTask(Task task), getTaskById(long id), getAllTasks(), etc.
 }
