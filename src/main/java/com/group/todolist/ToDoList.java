@@ -1,6 +1,8 @@
 package com.group.todolist;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ToDoList {
@@ -64,6 +66,17 @@ public class ToDoList {
             throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
         }
 
+    }
+    public List<Task> sortTasksByCriteria(Comparator<Task> taskComparator) {
+        List<Task> allTasks = databaseManager.getAllTasks();
+
+        // Create a copy of the tasks list to avoid modifying the original list
+        List<Task> sortedTasks = new ArrayList<>(allTasks);
+
+        // Sort the tasks based on the provided comparator
+        sortedTasks.sort(taskComparator);
+
+        return sortedTasks;
     }
 
 

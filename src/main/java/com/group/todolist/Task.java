@@ -15,11 +15,14 @@ public class Task {
     private String description;
     private boolean completed;
 
+    private Priority priority;
+
     //add test cases when task is completed
     //maybe add additional list
     public Task () {
         this.description = "";
         this.completed = false;
+        this.priority = Priority.MEDIUM;
     }
 
 
@@ -45,6 +48,14 @@ public class Task {
 
     public void markAsCompleted() {
         this.completed = true;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
     @Override

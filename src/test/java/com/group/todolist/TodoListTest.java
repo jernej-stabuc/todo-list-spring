@@ -187,4 +187,50 @@ public class TodoListTest {
         String newDescription = "Updated task description";
         toDoList.editTaskDescription(-1L, newDescription);
     }
+
+    @Test
+    public void testGetAndSetPriority() {
+        Task task = createMockTask(1L, "Test task 1");
+
+        task.setPriority(Priority.HIGH);
+
+        assertEquals(Priority.HIGH, task.getPriority());
+    }
+    @Test
+    public void testSortByDescription() {
+        Task task1 = createMockTask(1L, "Test task D");
+        Task task2 = createMockTask(2L, "Test task C");
+        Task task3 = createMockTask(3L, "Test task B");
+        Task task4 = createMockTask(4L, "Test task A");
+
+        when(mockDatabaseManager.getAllTasks()).thenReturn(List.of(task1, task2, task3, task4));
+
+        List<Task> sortedTasks = toDoList.sortTasksByCriteria(TaskComparatorFactory.getDescriptionComparator());
+
+        verify(mockDatabaseManager).getAllTasks();
+
+        assertEquals("Test task A", sortedTasks.get(0).getDescription());
+        assertEquals("Test task B", sortedTasks.get(1).getDescription());
+        assertEquals("Test task C", sortedTasks.get(2).getDescription());
+        assertEquals("Test task D", sortedTasks.get(3).getDescription());
+    }
+
+    @Test
+    public void testSortByLabel() {
+        Task task1 = createMockTask(1L, "Test task D");
+        Task task2 = createMockTask(2L, "Test task C");
+        Task task3 = createMockTask(3L, "Test task B");
+
+        task2.setPriority(Priority.HIGH);
+        task3.setPriority(Priority.HIGH);
+
+        when(mockDatabaseManager.getAllTasks()).thenReturn(List.of(task1, task2, task3));
+
+        List<Task> sortedTasks = toDoList.sortTasksByCriteria(TaskComparatorFactory.getLabelComparator());
+
+        verify(mockDatabaseManager).getAllTasks();
+
+        assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
+        assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
+    }
 }
